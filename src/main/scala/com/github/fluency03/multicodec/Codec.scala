@@ -4,7 +4,7 @@ import enumeratum._
 
 import scala.collection.immutable
 
-sealed abstract class Codec(name: String, val code: Int) extends EnumEntry {
+sealed abstract class Codec(val name: String, val code: Int) extends EnumEntry {
 
   override def entryName: String = name
 
@@ -13,33 +13,53 @@ sealed abstract class Codec(name: String, val code: Int) extends EnumEntry {
 object Codec extends Enum[Codec] {
   override lazy val values: immutable.IndexedSeq[Codec] = findValues
 
+  lazy val Codes: Map[Int, Codec] = values.map(codec => codec.code -> codec).toMap
+
+  def withCode(code: Int): Codec = Codes(code)
+
+  def withCodeOption(code: Int): Option[Codec] = Codes.get(code)
+
+  /**
+   * All Codecs
+   */
+
   // miscellaneous
   case object Raw extends Codec("raw", 0x55)
 
   // bases encodings
-  case object Base1 extends Codec("base1", '1')
-  case object Base2 extends Codec("base2", '0')
-  case object Base8 extends Codec("base8", '7')
-  case object Base10 extends Codec("base10", '9')
+  // TODO (fluency03): the following four BaseX are incorrect, to be fixed
+  // TODO (fluency03): See https://github.com/multiformats/multicodec/issues/89
+  case object Base1 extends Codec("base1", 0x01)
+  case object Base2 extends Codec("base2", 0x00)
+  case object Base8 extends Codec("base8", 0x07)
+  case object Base10 extends Codec("base10", 0x09)
 
-  case object Base16 extends Codec("base16", 'f')
-  case object Base16Upper extends Codec("base16-upper", 'F')
+  // TODO (fluency03): The following BaseXs are disabled due to the conflicts with others.
+//  case object Identity extends Codec("identity", 0x00)
 
-  case object base32 extends Codec("base32", 'b')
-  case object Base32Upper extends Codec("base32-upper", 'B')
-  case object Base32Pad extends Codec("base32pad", 'c')
-  case object Base32PadUpper extends Codec("base32pad-upper", 'C')
-  case object Base32Hex extends Codec("base32hex", 'v')
-  case object Base32HexUpper extends Codec("base32hex-upper", 'V')
-  case object Base32HexPad extends Codec("base32hexpad", 't')
-  case object Base32HexPadUpper extends Codec("base32hexpad-upper", 'T')
+//  case object Base1 extends Codec("base1", '1')
+//  case object Base2 extends Codec("base2", '0')
+//  case object Base8 extends Codec("base8", '7')
+//  case object Base10 extends Codec("base10", '9')
 
-  case object B58Flickr extends Codec("base58flickr", 'Z')
-  case object Base58BTC extends Codec("base58btc", 'z')
-  case object Base64 extends Codec("base64", 'm')
-  case object Base64Pad extends Codec("base64pad", 'M')
-  case object Base64URL extends Codec("base64url", 'u')
-  case object Base64URLPad extends Codec("base64urlpad", 'U')
+//  case object Base16 extends Codec("base16", 'f')
+//  case object Base16Upper extends Codec("base16-upper", 'F')
+//
+//  case object base32 extends Codec("base32", 'b')
+//  case object Base32Upper extends Codec("base32-upper", 'B')
+//  case object Base32Pad extends Codec("base32pad", 'c')
+//  case object Base32PadUpper extends Codec("base32pad-upper", 'C')
+//  case object Base32Hex extends Codec("base32hex", 'v')
+//  case object Base32HexUpper extends Codec("base32hex-upper", 'V')
+//  case object Base32HexPad extends Codec("base32hexpad", 't')
+//  case object Base32HexPadUpper extends Codec("base32hexpad-upper", 'T')
+//
+//  case object B58Flickr extends Codec("base58flickr", 'Z')
+//  case object Base58BTC extends Codec("base58btc", 'z')
+//  case object Base64 extends Codec("base64", 'm')
+//  case object Base64Pad extends Codec("base64pad", 'M')
+//  case object Base64URL extends Codec("base64url", 'u')
+//  case object Base64URLPad extends Codec("base64urlpad", 'U')
 
   // serialization formats
   case object CBOR extends Codec("cbor", 0x51)
@@ -54,7 +74,6 @@ object Codec extends Enum[Codec] {
   case object Multibase extends Codec("multibase", 0x33)
 
   // multihashes
-  case object Identity extends Codec("identity", 0x0)
   case object MD4 extends Codec("md4", 0xd4)
   case object MD5 extends Codec("md5", 0xd5)
 
@@ -106,22 +125,22 @@ object Codec extends Enum[Codec] {
   case object BLAKE2b_232 extends Codec("blake2b-232", 0xb21d)
   case object BLAKE2b_240 extends Codec("blake2b-240", 0xb21e)
   case object BLAKE2b_248 extends Codec("blake2b-248", 0xb21f)
-  case object BLAKE2b_256 extends Codec("blake2b-256", 0xb340)
-  case object BLAKE2b_264 extends Codec("blake2b-264", 0xb341)
-  case object BLAKE2b_272 extends Codec("blake2b-272", 0xb342)
-  case object BLAKE2b_280 extends Codec("blake2b-280", 0xb343)
-  case object BLAKE2b_288 extends Codec("blake2b-288", 0xb344)
-  case object BLAKE2b_296 extends Codec("blake2b-296", 0xb345)
-  case object BLAKE2b_304 extends Codec("blake2b-304", 0xb346)
-  case object BLAKE2b_312 extends Codec("blake2b-312", 0xb347)
-  case object BLAKE2b_320 extends Codec("blake2b-320", 0xb348)
-  case object BLAKE2b_328 extends Codec("blake2b-328", 0xb349)
-  case object BLAKE2b_336 extends Codec("blake2b-336", 0xb34a)
-  case object BLAKE2b_344 extends Codec("blake2b-344", 0xb34b)
-  case object BLAKE2b_352 extends Codec("blake2b-352", 0xb34c)
-  case object BLAKE2b_360 extends Codec("blake2b-360", 0xb34d)
-  case object BLAKE2b_368 extends Codec("blake2b-368", 0xb34e)
-  case object BLAKE2b_376 extends Codec("blake2b-376", 0xb34f)
+  case object BLAKE2b_256 extends Codec("blake2b-256", 0xb220)
+  case object BLAKE2b_264 extends Codec("blake2b-264", 0xb221)
+  case object BLAKE2b_272 extends Codec("blake2b-272", 0xb222)
+  case object BLAKE2b_280 extends Codec("blake2b-280", 0xb223)
+  case object BLAKE2b_288 extends Codec("blake2b-288", 0xb224)
+  case object BLAKE2b_296 extends Codec("blake2b-296", 0xb225)
+  case object BLAKE2b_304 extends Codec("blake2b-304", 0xb226)
+  case object BLAKE2b_312 extends Codec("blake2b-312", 0xb227)
+  case object BLAKE2b_320 extends Codec("blake2b-320", 0xb228)
+  case object BLAKE2b_328 extends Codec("blake2b-328", 0xb229)
+  case object BLAKE2b_336 extends Codec("blake2b-336", 0xb22a)
+  case object BLAKE2b_344 extends Codec("blake2b-344", 0xb22b)
+  case object BLAKE2b_352 extends Codec("blake2b-352", 0xb22c)
+  case object BLAKE2b_360 extends Codec("blake2b-360", 0xb22d)
+  case object BLAKE2b_368 extends Codec("blake2b-368", 0xb22e)
+  case object BLAKE2b_376 extends Codec("blake2b-376", 0xb22f)
   case object BLAKE2b_384 extends Codec("blake2b-384", 0xb230)
   case object BLAKE2b_392 extends Codec("blake2b-392", 0xb231)
   case object BLAKE2b_400 extends Codec("blake2b-400", 0xb232)
@@ -462,8 +481,5 @@ object Codec extends Enum[Codec] {
   case object TorrentInfo extends Codec("torrent-info", 0x7b)
   case object TorrentFile extends Codec("torrent-file", 0x7c)
   case object Ed25519Pub extends Codec("ed25519-pub", 0xed)
-
-
-
 
 }

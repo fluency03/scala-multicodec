@@ -15,8 +15,25 @@
 
 ## Install
 
+Latest version: **0.0.1**
+
+#### Maven
+
 ```
+<dependency>
+  <groupId>com.github.fluency03</groupId>
+  <artifactId>scala-multicodec_2.12</artifactId>
+  <version>0.0.1</version>
+</dependency>
 ```
+
+
+#### sbt
+
+```
+libraryDependencies += "com.github.fluency03" % "scala-multicodec_2.12" % {latestVersion}
+```
+
 
 ## Usage
 

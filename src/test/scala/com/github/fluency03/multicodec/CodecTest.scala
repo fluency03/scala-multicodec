@@ -17,11 +17,10 @@ class CodecTest extends FlatSpec with Matchers {
     } should have message s"blake2b is not a member of Enum ($existingEntriesString)"
     Codec.withNameOption("blake2b") shouldBe None
 
-//    Codec.values.size shouldBe Codec.Codes.size
+    Codec.values.size shouldBe Codec.Codes.size
 
     println(Codec.values.size + " - " + Codec.Codes.size)
     for (c <- Codec.values) {
-//      println(c.name + " - " + Codec.withCode(c.code).name)
       Codec.withCode(c.code) shouldBe c
       Codec.withName(c.name) shouldBe c
     }

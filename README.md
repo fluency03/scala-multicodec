@@ -15,7 +15,7 @@
 
 ## Install
 
-Latest version: **0.0.1**
+Latest version: **0.0.2**
 
 #### Maven
 
@@ -23,7 +23,7 @@ Latest version: **0.0.1**
 <dependency>
   <groupId>com.github.fluency03</groupId>
   <artifactId>scala-multicodec_2.12</artifactId>
-  <version>0.0.1</version>
+  <version>{latestVersion}</version>
 </dependency>
 ```
 

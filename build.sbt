@@ -1,6 +1,6 @@
 name := "scala-multicodec"
 
-version := "0.0.1"
+version := "0.0.2"
 
 organization := "com.github.fluency03"
 organizationName := "fluency03"

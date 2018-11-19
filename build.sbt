@@ -35,7 +35,7 @@ publishTo := {
 scmInfo := Some(
   ScmInfo(
     url("https://github.com/fluency03/scala-multicodec"),
-    "scm:git@github.com:fluency03/scala-multicodec.git"
+    "scm:git:git@github.com/fluency03/scala-multicodec.git"
   )
 )
 
